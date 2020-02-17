@@ -1,24 +1,18 @@
-import tkinter as tk
+import tkinter
+# Let's create the Tkinter window.
+window = tkinter.Tk()
+window.title("Neural net gui")
 
-name= tk.Tk()
+# You will first create a division with the help of Frame class and align them on TOP and BOTTOM with pack() method.
+top_frame = tkinter.Frame(window, width=500, height=500).pack()
+bottom_frame = tkinter.Frame(window).pack(side = "bottom")
 
-canvas1 = tk.Canvas(name, width = 400, height = 300)
-canvas1.pack()
+# Once the frames are created then you are all set to add widgets in both the frames.
+btn1 = tkinter.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=12).place(x=5, y=5)
 
-entry1 = tk.Entry (name)
-canvas1.create_window(200, 140, window=entry1)
-number=0
-def fcion1():
-    x1 = entry1.get()
-    label1 = tk.Label(name, text= int(x1))
-    number=x1
-    canvas1.create_window(200, 230, window=label1)
-    return number
+btn2 = tkinter.Button(top_frame, text = "Stop calculations", fg = "red", height=3, width=12).place(x=5, y=65)
 
-button1 = tk.Button(text='LabelText', command=fcion1)
-canvas1.create_window(200, 180, window=button1)
-name.mainloop()
-i = 0
-number = int(fcion1())
-for i in range(number):
-    print(i)
+
+
+
+window.mainloop()
