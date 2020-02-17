@@ -8,7 +8,7 @@ import os, sys
 ROOT = tk.Tk()
 ROOT.withdraw()
 # the input dialog
-number = simpledialog.askstring(title="NUmber of Iterations",
+number = simpledialog.askstring(title="Number of Iterations",
 prompt="Enter number of Iterations:")
 stop = int(number)
 # End user input#
@@ -17,8 +17,6 @@ for i in range (stop):
     plot_list.append(i)
 # defining some numbers for chart
 # just dont care and continue
-
-
 
 class NeuralNetwork():
 
@@ -79,15 +77,11 @@ class NeuralNetwork():
         inputs = inputs.astype(float)
         output = self.sigmoid(np.dot(inputs, self.synaptic_weights))
 
-
-
         return output
 
 if __name__ == "__main__":
 
     neural_network = NeuralNetwork()
-
-
 
     ################################
     #
@@ -101,11 +95,12 @@ if __name__ == "__main__":
     print("Random synaptic weights: ")
     print(neural_network.synaptic_weights)
 
+
+########### Nacitani vstupu ze souboru #########################
     cwd = os.getcwd()
     str=(cwd+'\\ropa.txt')
-
     f = open(str, "r")
-
+#################################################################
     data = list()
     for i in range(8308): #8308
         line = f.readline()
@@ -127,23 +122,26 @@ if __name__ == "__main__":
         #print(training_inputs)
         print("traning ", pozice, "/8000")
 
+
+##############stoping for export weights && ploting chart#############
         if(pozice == stop):
+
+            np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
+
             plt.figure(figsize=(30,5))
             print("error history")
             print(neural_network.error_history)
-
             plt.plot(plot_list, neural_network.error_history)
             plt.xlabel('Epoch')
             plt.ylabel('Error')
             plt.show()
-
+##########################################################################
 
 
         training_outputs = np.array([data[pozice+pocet_vstupu+1],data[pozice+pocet_vstupu+2],data[pozice+pocet_vstupu+3]]).T
         neural_network.train(training_inputs, training_outputs, pocet_uceni)
 
     print("TEST")
-
     print("Synaptic weights after training: ")
     print(neural_network.synaptic_weights)
 
