@@ -7,4 +7,4 @@ Import dat přímo z burzy ukládání do csv/txt (samostatný script nebo spole
 	https://www.binance.com/en/trade/BTC_USDT
 	Ideálně importovat ceny po minutách + volume
 
-Vyřešit paralelizaci, spolupráce dvou pyton scriptů (GUI 2.0 + master 1.0)
+Vyřešit paralelizaci, spolupráce dvou pyton scriptů (GUI 2.0 + master 1.0)_
