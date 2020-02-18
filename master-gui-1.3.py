@@ -18,8 +18,6 @@ for i in range (stop):
     plot_list.append(i)
 
 
-
-
 def network():
     class NeuralNetwork():
 
@@ -165,21 +163,12 @@ def network():
         print("Output data = ")
         print(neural_network.think(testovaci_data))
 
-
-
-
-
 top_frame = tk.Frame(window, width=1000, height=1000).pack()
 bottom_frame = tk.Frame(window).pack(side = "bottom")
 
 btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=network).place(x=5, y=5)
-btn2 = tk.Button(top_frame, text = "Stop calculations", fg = "red", height=3, width=24, command=window.quit).place(x=5, y=65)
+btn2 = tk.Button(top_frame, text = "Stop calculations", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
 btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, ).place(x=5, y=125)
-
-
-
-
-
 
 
 window.mainloop()
