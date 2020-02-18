@@ -186,6 +186,6 @@ bottom_frame = tk.Frame(window).pack(side = "bottom")
 btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Network).place(x=5, y=5)
 btn2 = tk.Button(top_frame, text = "Exit", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
 btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, command=iter ).place(x=5, y=125)
-
+l2=Label(window,text="Synaptic weigts are exported at every stop to \log.txt").place(x=0, y=380)
 
 window.mainloop()

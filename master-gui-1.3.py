@@ -3,9 +3,13 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import simpledialog
 import os, sys
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from pandas import DataFrame
+from matplotlib.backend_bases import key_press_handler
+from tkinter import *
 
 ################GUI Functions #################################
-
 
 
 def iter():
@@ -13,11 +17,7 @@ def iter():
     prompt="Enter number of Iterations:")
     global stop
     stop = int(number)
-    # End user input#
 
-def test_fce():
-    print(stop)
-    #print(plot_list)
 
 #################################################################
 
@@ -134,13 +134,19 @@ def Network():
 
                 np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
 
-                plt.figure(figsize=(30,5))
-                print("error history")
-                print(neural_network.error_history)
+                fig=plt.figure(figsize=(7,3))
                 plt.plot(plot_list, neural_network.error_history)
-                plt.xlabel('Epoch')
                 plt.ylabel('Error')
-                plt.show()
+
+                plot = FigureCanvasTkAgg(fig, master=window)  # A tk.DrawingArea.
+                plot.draw()
+                plot.get_tk_widget().place(x=220, y=5)
+                #pack(side=tk.BOTTOM, fill=tk.BOTH, expand=0.5)
+
+                window.mainloop()
+
+
+
     ##########################################################################
 
 
@@ -174,11 +180,12 @@ window = tk.Tk()
 window.title("Neural net gui")
 
 
-top_frame = tk.Frame(window, width=1150, height=550).pack()
+top_frame = tk.Frame(window, width=950, height=400).pack()
 bottom_frame = tk.Frame(window).pack(side = "bottom")
 
 btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Network).place(x=5, y=5)
-btn2 = tk.Button(top_frame, text = "Stop calculations", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
+btn2 = tk.Button(top_frame, text = "Exit", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
 btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, command=iter ).place(x=5, y=125)
+
 
 window.mainloop()
