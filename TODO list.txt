@@ -1,0 +1,10 @@
+Načítání dat z cvs souborů ( samostatný script)
+	 .cvs --> .txt
+	Každý údaj na samostatný řáadek 
+
+
+Import dat přímo z burzy ukládání do csv/txt (samostatný script nebo společně s výše uvedeným)
+	https://www.binance.com/en/trade/BTC_USDT
+	Ideálně importovat ceny po minutách + volume
+
+Vyřešit paralelizaci, spolupráce dvou pyton scriptů (GUI 2.0 + master 1.0)
