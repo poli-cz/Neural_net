@@ -14,7 +14,7 @@ from tkinter import *
 
 def iter():
     number = simpledialog.askstring(title="Number of Iterations",
-    prompt="Enter number of Iterations:") 
+    prompt="Enter number of Iterations:")
     global stop
     stop = int(number)
 

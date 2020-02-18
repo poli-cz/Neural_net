@@ -1,5 +1,9 @@
 import numpy as np
+import os, sys
+#import GUI_master
 
+
+#print(GUI_master.stop)
 class NeuralNetwork():
 
     def __init__(self):
@@ -16,7 +20,7 @@ class NeuralNetwork():
     def train(self, training_inputs, training_outputs, training_iterations):
 
        for iteration in range(training_iterations):
-           
+
             output = self.think(training_inputs)
 
             print("Output je:")
@@ -44,10 +48,6 @@ class NeuralNetwork():
             print(self.think(training_inputs))
             ##########
 
-
-
-
-
     def think(self, inputs):
 
         inputs = inputs.astype(float)
@@ -58,8 +58,6 @@ class NeuralNetwork():
 if __name__ == "__main__":
 
     neural_network = NeuralNetwork()
-
-
 
     ################################
     #
@@ -74,7 +72,9 @@ if __name__ == "__main__":
     print(neural_network.synaptic_weights)
 
 
-    f = open("C:\\Users\\polis\\Desktop\\a.txt", "r")
+    cwd = os.getcwd()
+    str=(cwd+'\\ropa.txt')
+    f = open(str, "r")
 
     data = list()
     for i in range(8308):
@@ -82,12 +82,7 @@ if __name__ == "__main__":
         data.append(float(line))
         #print(data[i])
 
-
-
-
     training_inputs = np.empty([3,50])
-
-
 
     for pozice in range((len(data)-pocet_vstupu-250)):
         for i in range(pocet_vstupu):
