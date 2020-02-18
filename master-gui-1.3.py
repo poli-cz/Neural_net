@@ -4,21 +4,25 @@ import tkinter as tk
 from tkinter import simpledialog
 import os, sys
 
-window = tk.Tk()
-window.title("Neural net gui")
+################GUI Functions #################################
 
 
-number = simpledialog.askstring(title="NUmber of Iterations",
-prompt="Enter number of Iterations:")
-stop = int(number)
-print(stop)
-# End user input#
-plot_list=[]
-for i in range (stop):
-    plot_list.append(i)
 
+def iter():
+    number = simpledialog.askstring(title="Number of Iterations",
+    prompt="Enter number of Iterations:")
+    global stop
+    stop = int(number)
+    # End user input#
 
-def network():
+def test_fce():
+    print(stop)
+    #print(plot_list)
+
+#################################################################
+
+#### Main body #### Neural net #########
+def Network():
     class NeuralNetwork():
 
         def __init__(self):
@@ -30,9 +34,6 @@ def network():
             if deriv == True:
                 return x * (1 - x)
             return 1/(1+np.exp(-x))
-
-        def feeding_fuckin_net(self):
-            self.hiden =self.sigmoid(np.dot(sefl.inputs, self.synaptic_weights))
 
         def backpropagation(self):
             self.error  = self.outputs - self.hidden
@@ -108,6 +109,9 @@ def network():
             data.append(float(line))
             #print(data[i])
 
+        plot_list=[]
+        for i in range(stop):
+            plot_list.append(i)
 
         training_inputs = np.empty([3,50])
 
@@ -125,6 +129,7 @@ def network():
 
 
     ##############stoping for export weights && ploting chart#############
+
             if(pozice == stop):
 
                 np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
@@ -162,13 +167,18 @@ def network():
         #print(neural_network.synaptic_weights)
         print("Output data = ")
         print(neural_network.think(testovaci_data))
+#######################################
 
-top_frame = tk.Frame(window, width=1000, height=1000).pack()
+##############################GUI interference###################################
+window = tk.Tk()
+window.title("Neural net gui")
+
+
+top_frame = tk.Frame(window, width=1150, height=550).pack()
 bottom_frame = tk.Frame(window).pack(side = "bottom")
 
-btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=network).place(x=5, y=5)
+btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Network).place(x=5, y=5)
 btn2 = tk.Button(top_frame, text = "Stop calculations", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
-btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, ).place(x=5, y=125)
-
+btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, command=iter ).place(x=5, y=125)
 
 window.mainloop()
