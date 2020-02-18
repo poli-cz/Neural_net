@@ -18,11 +18,9 @@ btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, w
 btn2 = tk.Button(top_frame, text = "Stop calculations", fg = "red", height=3, width=12, command=some_other_fce).place(x=5, y=65)
 
 
-load = Image.open("hell.jpg")
-render = ImageTk.PhotoImage(load)
-
-img = Label(self, image=render)
-img.image = render
-img.place(x=0, y=0)
-
+img = Image.open("hell.png")  # PIL solution
+img = img.resize((250, 250), Image.ANTIALIAS) #The (250, 250) is (height, width)
+img = ImageTk.PhotoImage(img) # convert to PhotoImage
+image = tk.create_image(1500,0, anchor = NE, image = img)
+# image.pack() # canvas objects do not use pack() or grid()
 window.mainloop()
