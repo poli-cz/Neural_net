@@ -8,6 +8,8 @@ from matplotlib.backends.backend_tkagg import (
 from pandas import DataFrame
 from matplotlib.backend_bases import key_press_handler
 from tkinter import *
+import threading
+import time
 
 ################GUI Functions #################################
 
@@ -17,6 +19,16 @@ def iter():
     prompt="Enter number of Iterations:")
     global stop
     stop = int(number)
+
+def Thread_maker():
+        t = threading.Thread(target=NET_launcher)
+        t.start()
+
+def NET_launcher():
+    cwd = os.getcwd()
+    str=('python '+cwd+'\\master.py')
+    threading.Thread(Network()).start()
+    
 
 
 #################################################################
@@ -183,7 +195,7 @@ window.title("Neural net gui")
 top_frame = tk.Frame(window, width=950, height=400).pack()
 bottom_frame = tk.Frame(window).pack(side = "bottom")
 
-btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Network).place(x=5, y=5)
+btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Thread_maker).place(x=5, y=5)
 btn2 = tk.Button(top_frame, text = "Exit", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
 btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, command=iter ).place(x=5, y=125)
 l2=Label(window,text="Synaptic weigts are exported at every stop to \log.txt").place(x=0, y=380)
