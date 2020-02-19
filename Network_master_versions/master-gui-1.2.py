@@ -10,7 +10,7 @@ ROOT.withdraw()
 # the input dialog
 number = simpledialog.askstring(title="Number of Iterations",
 prompt="Enter number of Iterations:")
-stop = int(number)
+stop = 10*int(number)
 # End user input#
 plot_list=[]
 for i in range (stop):
@@ -45,31 +45,31 @@ class NeuralNetwork():
             output= self.think(training_inputs)
 
             output= self.think(training_inputs)
-            print("Output je:")
-            print(output)
-            print("očekávaná hodnota je:")
-            print(training_outputs)
+            #print("Output je:")
+            #print(output)
+            #print("očekávaná hodnota je:")
+            #print(training_outputs)
 
             self.error = training_outputs-output
             self.error_history.append(np.average(np.abs(self.error)))
             #self.error_history.append(self.error[0])
 
-            print("error je:")
-            print(self.error)
+            #print("error je:")
+            #print(self.error)
 
             adjustments = np.dot(training_inputs.T, self.error*self.sigmoid(output, deriv=True))
 
-            print("adjustments are:")
-            print(adjustments)
-            print("synaptic weights are:")
-            print(self.synaptic_weights)
+            #print("adjustments are:")
+            #print(adjustments)
+            #print("synaptic weights are:")
+            #print(self.synaptic_weights)
 
             self.synaptic_weights = self.synaptic_weights + adjustments
 
 
             ##########
-            print("output po adjustmentu:")
-            print(self.think(training_inputs))
+            #print("output po adjustmentu:")
+            #print(self.think(training_inputs))
             ##########
 
     def think(self, inputs):
@@ -89,11 +89,11 @@ if __name__ == "__main__":
     #
     ################################
 
-    pocet_uceni = 1
+    pocet_uceni = 10
     pocet_vstupu = 50
 
-    print("Random synaptic weights: ")
-    print(neural_network.synaptic_weights)
+    #print("Random synaptic weights: ")
+    #print(neural_network.synaptic_weights)
 
 
 ########### Nacitani vstupu ze souboru #########################
@@ -141,9 +141,9 @@ if __name__ == "__main__":
         training_outputs = np.array([data[pozice+pocet_vstupu+1],data[pozice+pocet_vstupu+2],data[pozice+pocet_vstupu+3]]).T
         neural_network.train(training_inputs, training_outputs, pocet_uceni)
 
-    print("TEST")
-    print("Synaptic weights after training: ")
-    print(neural_network.synaptic_weights)
+    #print("TEST")
+    #print("Synaptic weights after training: ")
+    #print(neural_network.synaptic_weights)
 
 
     ###################

@@ -4,13 +4,15 @@ import tkinter as tk
 from tkinter import simpledialog
 import os, sys
 
+global learning_coeficient
+learning_coeficient=int(sys.argv[2])
 # input stop for chart
 
 global stop
 stop=int(sys.argv[1])
 # End user input#
 plot_list=[]
-for i in range (stop):
+for i in range (learning_coeficient*stop):
     plot_list.append(i)
 # defining some numbers for chart
 # just dont care and continue
@@ -22,51 +24,51 @@ class NeuralNetwork():
         self.synaptic_weights = 2*np.random.random((50,1))-1
         self.error_history = []
 
+
     def sigmoid(self, x, deriv=False):
         if deriv == True:
             return x * (1 - x)
         return 1/(1+np.exp(-x))
-
-    def feeding_fuckin_net(self):
-        self.hiden =self.sigmoid(np.dot(sefl.inputs, self.synaptic_weights))
 
     def backpropagation(self):
         self.error  = self.outputs - self.hidden
         delta = self.error * self.sigmoid(self.hidden, deriv=True)
         self.weights += np.dot(self.inputs.T, delta)
 
+
     def train(self, training_inputs, training_outputs, training_iterations):
 
-        for iteration in range(training_iterations):
+        for iteration in range(training_iterations*learning_coeficient):
 
             output= self.think(training_inputs)
 
             output= self.think(training_inputs)
-            print("Output je:")
-            print(output)
-            print("očekávaná hodnota je:")
-            print(training_outputs)
+        #    print("Output je:")
+        #    print(output)
+        #    print("očekávaná hodnota je:")
+        #    print(training_outputs)
 
             self.error = training_outputs-output
+
             self.error_history.append(np.average(np.abs(self.error)))
             #self.error_history.append(self.error[0])
 
-            print("error je:")
-            print(self.error)
+        #    print("error je:")
+            #print(self.error)
 
             adjustments = np.dot(training_inputs.T, self.error*self.sigmoid(output, deriv=True))
 
-            print("adjustments are:")
-            print(adjustments)
-            print("synaptic weights are:")
-            print(self.synaptic_weights)
+            #print("adjustments are:")
+            #print(adjustments)
+            #print("synaptic weights are:")
+            #print(self.synaptic_weights)
 
             self.synaptic_weights = self.synaptic_weights + adjustments
 
 
             ##########
-            print("output po adjustmentu:")
-            print(self.think(training_inputs))
+            #print("output po adjustmentu:")
+            #print(self.think(training_inputs))
             ##########
 
     def think(self, inputs):
@@ -89,8 +91,8 @@ if __name__ == "__main__":
     pocet_uceni = 1
     pocet_vstupu = 50
 
-    print("Random synaptic weights: ")
-    print(neural_network.synaptic_weights)
+    #print("Random synaptic weights: ")
+    #print(neural_network.synaptic_weights)
 
 
 ########### Nacitani vstupu ze souboru #########################
@@ -99,6 +101,8 @@ if __name__ == "__main__":
     f = open(str, "r")
 #################################################################
     data = list()
+
+
     for i in range(8308): #8308
         line = f.readline()
         data.append(float(line))
@@ -124,10 +128,12 @@ if __name__ == "__main__":
         if(pozice == stop):
 
             np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
+            min_array=np.mean(neural_network.error_history)
 
+            print(min_array)
             plt.figure(figsize=(30,5))
-            print("error history")
-            print(neural_network.error_history)
+            #print("error history")
+            #print(neural_network.error_history)
             plt.plot(plot_list, neural_network.error_history)
             plt.xlabel('Epoch')
             plt.ylabel('Error')
@@ -141,7 +147,7 @@ if __name__ == "__main__":
 
     print("TEST")
     print("Synaptic weights after training: ")
-    print(neural_network.synaptic_weights)
+    #print(neural_network.synaptic_weights)
 
 
     ###################
