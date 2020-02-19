@@ -8,11 +8,8 @@ from matplotlib.backends.backend_tkagg import (
 from pandas import DataFrame
 from matplotlib.backend_bases import key_press_handler
 from tkinter import *
-import threading
-import time
-
+from numba import jit
 ################GUI Functions #################################
-
 
 def iter():
     number = simpledialog.askstring(title="Number of Iterations",
@@ -20,20 +17,10 @@ def iter():
     global stop
     stop = int(number)
 
-def Thread_maker():
-        t = threading.Thread(target=NET_launcher)
-        t.start()
-
-def NET_launcher():
-    cwd = os.getcwd()
-    str=('python '+cwd+'\\master.py')
-    threading.Thread(Network()).start()
-    
-
-
 #################################################################
 
 #### Main body #### Neural net #########
+
 def Network():
     class NeuralNetwork():
 
@@ -47,12 +34,15 @@ def Network():
                 return x * (1 - x)
             return 1/(1+np.exp(-x))
 
+        #@jit(nopython=True)
         def backpropagation(self):
             self.error  = self.outputs - self.hidden
             delta = self.error * self.sigmoid(self.hidden, deriv=True)
             self.weights += np.dot(self.inputs.T, delta)
 
+
         def train(self, training_inputs, training_outputs, training_iterations):
+
 
             for iteration in range(training_iterations):
 
@@ -73,17 +63,17 @@ def Network():
 
                 adjustments = np.dot(training_inputs.T, self.error*self.sigmoid(output, deriv=True))
 
-                print("adjustments are:")
-                print(adjustments)
-                print("synaptic weights are:")
-                print(self.synaptic_weights)
+                #print("adjustments are:")
+                #print(adjustments)
+                #print("synaptic weights are:")
+                #print(self.synaptic_weights)
 
                 self.synaptic_weights = self.synaptic_weights + adjustments
 
 
                 ##########
-                print("output po adjustmentu:")
-                print(self.think(training_inputs))
+                #print("output po adjustmentu:")
+                #print(self.think(training_inputs))
                 ##########
 
         def think(self, inputs):
@@ -106,17 +96,17 @@ def Network():
         pocet_uceni = 1
         pocet_vstupu = 50
 
-        print("Random synaptic weights: ")
-        print(neural_network.synaptic_weights)
+        #print("Random synaptic weights: ")
+        #print(neural_network.synaptic_weights)
 
 
     ########### Nacitani vstupu ze souboru #########################
         cwd = os.getcwd()
-        str=(cwd+'\\ropa.txt')
+        str=(cwd+'\\data.txt')
         f = open(str, "r")
     #################################################################
         data = list()
-        for i in range(8308): #8308
+        for i in range(20000): #8308
             line = f.readline()
             data.append(float(line))
             #print(data[i])
@@ -137,13 +127,12 @@ def Network():
 
             #print("testovací sady:")
             #print(training_inputs)
-            print("traning ", pozice, "/8000")
+            print("traning ", pozice, "/20000")
 
 
     ##############stoping for export weights && ploting chart#############
 
             if(pozice == stop):
-
                 np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
 
                 fig=plt.figure(figsize=(7,3))
@@ -153,21 +142,17 @@ def Network():
                 plot = FigureCanvasTkAgg(fig, master=window)  # A tk.DrawingArea.
                 plot.draw()
                 plot.get_tk_widget().place(x=220, y=5)
-                #pack(side=tk.BOTTOM, fill=tk.BOTH, expand=0.5)
 
                 window.mainloop()
-
-
-
     ##########################################################################
 
 
             training_outputs = np.array([data[pozice+pocet_vstupu+1],data[pozice+pocet_vstupu+2],data[pozice+pocet_vstupu+3]]).T
             neural_network.train(training_inputs, training_outputs, pocet_uceni)
 
-        print("TEST")
-        print("Synaptic weights after training: ")
-        print(neural_network.synaptic_weights)
+        #print("TEST")
+        #print("Synaptic weights after training: ")
+    #    print(neural_network.synaptic_weights)
 
 
         ###################
@@ -176,9 +161,9 @@ def Network():
 
         testovaci_data = np.empty(50)
         for i in range(50):
-            testovaci_data[i] = data[8200+i]
+            testovaci_data[i] = data[20000+i]
         print("Expected value for this testing input:")
-        print(data[8200+i+1])
+        print(data[20000+i+1])
 
 
         print("New situation:")
@@ -188,16 +173,16 @@ def Network():
 #######################################
 
 ##############################GUI interference###################################
-window = tk.Tk()
-window.title("Neural net gui")
 
+window = tk.Tk()
+window.title("Neural net GUI")
 
 top_frame = tk.Frame(window, width=950, height=400).pack()
 bottom_frame = tk.Frame(window).pack(side = "bottom")
 
-btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Thread_maker).place(x=5, y=5)
+btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, width=24, command=Network).place(x=5, y=5)
 btn2 = tk.Button(top_frame, text = "Exit", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
 btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, command=iter ).place(x=5, y=125)
-l2=Label(window,text="Synaptic weigts are exported at every stop to \log.txt").place(x=0, y=380)
+log=Label(window,text="Synaptic weigts are exported at every stop to \log.txt").place(x=0, y=380)
 
 window.mainloop()
