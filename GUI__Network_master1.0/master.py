@@ -13,17 +13,19 @@ from numba import jit
 #############Define some defaut values only for testing###############
 global stop
 global learning_coef
-stop=1000
-learning_coef=2
+global load
+load =1
+#stop=1000
+#learning_coef=2
 ######################################################################3
 
 
 ###########Overwriting default data with real values if they exist###########
-if learning_coef!=2:
-    learning_coef=int(sys.argv[2])
+#if learning_coef!=2:
+learning_coef=int(sys.argv[2])
 
-if stop!=1000:
-    stop=int(sys.argv[1])
+#if stop!=1000:
+stop=int(sys.argv[1])
 ##################################################
 
 
@@ -37,7 +39,11 @@ class NeuralNetwork():
 
     def __init__(self):
         np.random.seed(1)
-        self.synaptic_weights = 2*np.random.random((50,1))-1
+        if load==1:
+            self.synaptic_weights=np.load('synaptic_weights.npy', mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII')
+        else:
+            self.synaptic_weights = 2*np.random.random((50,1))-1
+
         self.error_history = []
 
     def sigmoid(self, x, deriv=False):
@@ -66,7 +72,8 @@ class NeuralNetwork():
     #        print(training_outputs)
 
             self.error = training_outputs-output
-            self.error_history.append(np.average(np.abs(self.error)))
+            self.chyba=(self.error/(output/100))
+            self.error_history.append(np.average(np.abs(self.chyba)))
             #self.error_history.append(self.error[0])
 
     #        print("error je:")
@@ -80,6 +87,10 @@ class NeuralNetwork():
     #        print(self.synaptic_weights)
 
             self.synaptic_weights = self.synaptic_weights + adjustments
+            if load ==0:
+                cosi=(np.average(np.abs(self.chyba)))
+                if cosi<3:
+                    np.save('synaptic_weights', self.synaptic_weights, allow_pickle=True, fix_imports=True)
 
 
             ##########
@@ -140,21 +151,11 @@ if __name__ == "__main__":
 
 ##############stoping for export weights && ploting chart#############
         if(pozice == stop):
+            print('DONE')
+            np.save('error_history', neural_network.error_history, allow_pickle=True, fix_imports=True)
+            np.save('plot_list', plot_list, allow_pickle=True, fix_imports=True)
+            exit()
 
-            np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
-
-            root = tk.Tk()
-            root.title("Chart")
-
-            top_frame=tk.Frame(root, width=450, height=225).pack()
-            bottom_frame=tk.Frame(root).pack(side="bottom")
-            fig=plt.figure(figsize=(7,3))
-            plt.plot(plot_list, neural_network.error_history)
-            plt.ylabel('Error')
-
-            plot = FigureCanvasTkAgg(fig, master=top_frame)  # A tk.DrawingArea.
-            plot.draw()
-            plot.get_tk_widget().place(x=220, y=5)
 
 ##########################################################################
 
