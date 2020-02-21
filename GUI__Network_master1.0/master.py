@@ -3,14 +3,32 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import simpledialog
 import os, sys
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from pandas import DataFrame
+from matplotlib.backend_bases import key_press_handler
+from tkinter import *
+from numba import jit
 
-# input stop for chart
-
+#############Define some defaut values only for testing###############
 global stop
-stop=int(sys.argv[1])
-# End user input#
+global learning_coef
+stop=1000
+learning_coef=2
+######################################################################3
+
+
+###########Overwriting default data with real values if they exist###########
+if learning_coef!=2:
+    learning_coef=int(sys.argv[2])
+
+if stop!=1000:
+    stop=int(sys.argv[1])
+##################################################
+
+
 plot_list=[]
-for i in range (stop):
+for i in range (stop*learning_coef):
     plot_list.append(i)
 # defining some numbers for chart
 # just dont care and continue
@@ -42,31 +60,31 @@ class NeuralNetwork():
             output= self.think(training_inputs)
 
             output= self.think(training_inputs)
-            print("Output je:")
-            print(output)
-            print("očekávaná hodnota je:")
-            print(training_outputs)
+    #        print("Output je:")
+    #        print(output)
+    #        print("očekávaná hodnota je:")
+    #        print(training_outputs)
 
             self.error = training_outputs-output
             self.error_history.append(np.average(np.abs(self.error)))
             #self.error_history.append(self.error[0])
 
-            print("error je:")
-            print(self.error)
+    #        print("error je:")
+    #        print(self.error)
 
             adjustments = np.dot(training_inputs.T, self.error*self.sigmoid(output, deriv=True))
 
-            print("adjustments are:")
-            print(adjustments)
-            print("synaptic weights are:")
-            print(self.synaptic_weights)
+    #        print("adjustments are:")
+    #        print(adjustments)
+    #        print("synaptic weights are:")
+    #        print(self.synaptic_weights)
 
             self.synaptic_weights = self.synaptic_weights + adjustments
 
 
             ##########
-            print("output po adjustmentu:")
-            print(self.think(training_inputs))
+    #        print("output po adjustmentu:")
+    #        print(self.think(training_inputs))
             ##########
 
     def think(self, inputs):
@@ -86,11 +104,11 @@ if __name__ == "__main__":
     #
     ################################
 
-    pocet_uceni = 1
+    pocet_uceni = learning_coef
     pocet_vstupu = 50
 
-    print("Random synaptic weights: ")
-    print(neural_network.synaptic_weights)
+    #print("Random synaptic weights: ")
+    #print(neural_network.synaptic_weights)
 
 
 ########### Nacitani vstupu ze souboru #########################
@@ -125,14 +143,19 @@ if __name__ == "__main__":
 
             np.savetxt('log.txt', (neural_network.synaptic_weights), fmt="%1.5e")
 
-            plt.figure(figsize=(30,5))
-            print("error history")
-            print(neural_network.error_history)
+            root = tk.Tk()
+            root.title("Chart")
+
+            top_frame=tk.Frame(root, width=450, height=225).pack()
+            bottom_frame=tk.Frame(root).pack(side="bottom")
+            fig=plt.figure(figsize=(7,3))
             plt.plot(plot_list, neural_network.error_history)
-            plt.xlabel('Epoch')
             plt.ylabel('Error')
-            plt.show()
-            exit()
+
+            plot = FigureCanvasTkAgg(fig, master=top_frame)  # A tk.DrawingArea.
+            plot.draw()
+            plot.get_tk_widget().place(x=220, y=5)
+
 ##########################################################################
 
 

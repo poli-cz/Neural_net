@@ -22,6 +22,11 @@ class gui(threading.Thread):
         global stop
         stop = int(number)
 
+        number2=simpledialog.askstring(title="Define learning coeficient",
+        prompt="Enter learnig coeficient")
+        global learning_coef
+        learning_coef=number2
+
     def Thread_maker():
             t = threading.Thread(target=gui.NET_launcher)
             t.start()
@@ -35,8 +40,10 @@ class gui(threading.Thread):
             return
 
         cwd = os.getcwd()
-        stoped=str(stop)
-        adress_args=('python '+cwd+'\\master.py '+stoped)
+        learning_coeficient=str(learning_coef)
+        iter_number=str(stop)
+        adress_args=('python '+cwd+'\\master.py '+iter_number+' '+learning_coeficient)
+        print(adress_args)
         os.system(adress_args)
 
     def __init__(self):
