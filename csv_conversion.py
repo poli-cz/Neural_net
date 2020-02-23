@@ -12,7 +12,7 @@ with open(txt_file, "w") as output_file:
         output_file.close()
         
 with open(txt_file2, "w") as output_file:
-    with open(csv_file, "r", newline='') as input_file:
+    with open(csv_file, "r") as input_file:
         reading = csv.DictReader(input_file)
         for row in reading:
             output_file.write(row['Close']+'\n')
