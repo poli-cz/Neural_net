@@ -173,7 +173,7 @@ def Network():
 #######################################
 
 ##############################GUI interference###################################
-
+var1=1
 window = tk.Tk()
 window.title("Neural net GUI")
 
@@ -184,5 +184,7 @@ btn1 = tk.Button(top_frame, text = "Run calculations", fg = "green", height=3, w
 btn2 = tk.Button(top_frame, text = "Exit", fg = "red", height=3, width=24, command=exit).place(x=5, y=65)
 btn3 = tk.Button(top_frame, text = "Define number of iterations", fg = "green", height=3, width=24, command=iter ).place(x=5, y=125)
 log=Label(window,text="Synaptic weigts are exported at every stop to \log.txt").place(x=0, y=380)
+c1 = tk.Checkbutton(top_frame, text='Load Weights',variable=var1, onvalue=1, offvalue=0)
+c1.pack()
 
 window.mainloop()

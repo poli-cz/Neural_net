@@ -11,6 +11,7 @@ import threading
 from functools import partial
 import subprocess
 
+
 class neural_net_controller(threading.Thread):
 
     def iter():
@@ -35,24 +36,11 @@ class neural_net_controller(threading.Thread):
         cwd = os.getcwd()
         learning_coeficient=str(learning_coef)
         iter_number=str(stop)
-        adress_args=('python '+cwd+'\\master.py '+iter_number+' '+learning_coeficient)
-        print(adress_args)
+        adress_args=('python '+cwd+'\\master2.py '+iter_number+' '+learning_coeficient)
         os.system(adress_args)
 
 
-        #Outputfileobject=os.popen(adress_args)
-        #Output=Outputfileobject.read()
-        #Outputfileobject.close()
-
-        #root=Tk()
-        #root.title("Output text")
-        #Text=Label(self ,text=Output).pack()
-        #root.mainloop()
-
     def chart(self):
-        if stop==0:
-            print('first do somethink')
-            exit()
 
         error_history=[]
         error_history=np.load('error_history.npy', mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII')
@@ -61,6 +49,7 @@ class neural_net_controller(threading.Thread):
         plot_list=np.load('plot_list.npy', mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII')
 
         fig=plt.figure(figsize=(7,3))
+        plt.ylim([-100,100])
 
         plt.plot(plot_list, error_history)
         plt.ylabel('Percentage Error')
@@ -84,8 +73,9 @@ class neural_net_controller(threading.Thread):
 
 class Gui():
     root = tk.Tk()
-    canvas = tk.Canvas(root, height = 720, width = 1280, bg = "grey")
+    canvas = tk.Canvas(root, height = 720, width = 1280, bg = "Grey")
     canvas.pack()
+
 
 
     #KONEC PROGRESSBARU
@@ -99,20 +89,20 @@ class Gui():
     frame4.place(relwidth = 0.1, relheight = 0.05, relx = 0.02, rely = 0.26)
     frame5 = tk.Frame(root, bg = "black") #graf
     frame5.place(relwidth = 0.8, relheight = 0.5, relx = 0.15, rely = 0.05)
-    frame6 = tk.Frame(root, bg = "black") #imput box
-    frame6.place(relwidth = 0.1, relheight = 0.05, relx = 0.02, rely = 0.33)
+    #frame6 = tk.Frame(root, bg = "black") #imput box
+    #frame6.place(relwidth = 0.1, relheight = 0.05, relx = 0.02, rely = 0.33)
     frame7 = tk.Frame(root, bg = "white") #imported files MUZES ZKUSIT VLOZIT I VIC SOUBORU A OBJEVI SE TI TAM
     frame7.place(relwidth = 0.35, relheight = 0.12, relx = 0.02, rely = 0.575)
     frame8 = tk.Frame(root, bg = "black") #start
     frame8.place(relwidth = 0.1, relheight = 0.05, relx = 0.02, rely = 0.45)
 
-    usrinput1 = tk.Entry(root)
-    canvas.create_window(200, 140, window=usrinput1)
-    usrinput1.place(relwidth = 0.1, relheight = 0.05, relx = 0.02, rely = 0.33)
+    #usrinput1 = tk.Entry(root)
+    #canvas.create_window(200, 140, window=usrinput1)
+    #usrinput1.place(relwidth = 0.1, relheight = 0.05, relx = 0.02, rely = 0.33)
 
 
-    canvas = tk.Canvas(root, height = 720, width = 1280, bg = "grey")
-    canvas.pack()
+    #canvas = tk.Canvas(root, height = 720, width = 1280, bg = "white")
+    #canvas.pack()
 
     start = tk.Button(frame1, text = "Iteration number", fg = "black", bg = "green", padx=100,pady=25,
     command=neural_net_controller.iter) #start
@@ -129,6 +119,10 @@ class Gui():
     char = tk.Button(frame8, text = "Build chart", fg = "black", bg = "green", padx=100,pady=25
     , command=partial(neural_net_controller.chart, frame5)) #print chart
     char.pack()
+
+
+    #c1 = tk.Checkbutton(root, text='Restore Weights',command=var1, onvalue=1, offvalue=0).place(x=40, y=240)
+
 
 
     root.mainloop()

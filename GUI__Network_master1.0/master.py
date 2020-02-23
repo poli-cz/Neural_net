@@ -12,25 +12,20 @@ from numba import jit
 
 #############Define some defaut values only for testing###############
 global stop
-global learning_coef
+global learning_coeficient
 global load
-load =1
-#stop=1000
-#learning_coef=2
-######################################################################3
+global percentage
+percentage =1
+load =0
 
 
-###########Overwriting default data with real values if they exist###########
-#if learning_coef!=2:
-learning_coef=int(sys.argv[2])
-
-#if stop!=1000:
+learning_coeficient=int(sys.argv[2])
 stop=int(sys.argv[1])
 ##################################################
 
-
 plot_list=[]
-for i in range (stop*learning_coef):
+
+for i in range (stop*learning_coeficient):
     plot_list.append(i)
 # defining some numbers for chart
 # just dont care and continue
@@ -41,62 +36,42 @@ class NeuralNetwork():
         np.random.seed(1)
         if load==1:
             self.synaptic_weights=np.load('synaptic_weights.npy', mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII')
+            print('only once')
         else:
             self.synaptic_weights = 2*np.random.random((50,1))-1
 
         self.error_history = []
+
 
     def sigmoid(self, x, deriv=False):
         if deriv == True:
             return x * (1 - x)
         return 1/(1+np.exp(-x))
 
-    def feeding_fuckin_net(self):
-        self.hiden =self.sigmoid(np.dot(sefl.inputs, self.synaptic_weights))
-
     def backpropagation(self):
         self.error  = self.outputs - self.hidden
         delta = self.error * self.sigmoid(self.hidden, deriv=True)
         self.weights += np.dot(self.inputs.T, delta)
 
+
     def train(self, training_inputs, training_outputs, training_iterations):
 
-        for iteration in range(training_iterations):
+        for iteration in range(training_iterations*learning_coeficient):
 
             output= self.think(training_inputs)
-
-            output= self.think(training_inputs)
-    #        print("Output je:")
-    #        print(output)
-    #        print("očekávaná hodnota je:")
-    #        print(training_outputs)
 
             self.error = training_outputs-output
             self.chyba=(self.error/(output/100))
             self.error_history.append(np.average(np.abs(self.chyba)))
-            #self.error_history.append(self.error[0])
-
-    #        print("error je:")
-    #        print(self.error)
 
             adjustments = np.dot(training_inputs.T, self.error*self.sigmoid(output, deriv=True))
-
-    #        print("adjustments are:")
-    #        print(adjustments)
-    #        print("synaptic weights are:")
-    #        print(self.synaptic_weights)
 
             self.synaptic_weights = self.synaptic_weights + adjustments
             if load ==0:
                 cosi=(np.average(np.abs(self.chyba)))
-                if cosi<3:
+                if cosi<percentage:
                     np.save('synaptic_weights', self.synaptic_weights, allow_pickle=True, fix_imports=True)
 
-
-            ##########
-    #        print("output po adjustmentu:")
-    #        print(self.think(training_inputs))
-            ##########
 
     def think(self, inputs):
 
@@ -115,7 +90,7 @@ if __name__ == "__main__":
     #
     ################################
 
-    pocet_uceni = learning_coef
+    pocet_uceni = 1
     pocet_vstupu = 50
 
     #print("Random synaptic weights: ")
@@ -124,10 +99,12 @@ if __name__ == "__main__":
 
 ########### Nacitani vstupu ze souboru #########################
     cwd = os.getcwd()
-    str=(cwd+'\\data.txt')
+    str=(cwd+'\\ropa.txt')
     f = open(str, "r")
 #################################################################
     data = list()
+
+
     for i in range(8308): #8308
         line = f.readline()
         data.append(float(line))
@@ -156,7 +133,6 @@ if __name__ == "__main__":
             np.save('plot_list', plot_list, allow_pickle=True, fix_imports=True)
             exit()
 
-
 ##########################################################################
 
 
@@ -165,7 +141,7 @@ if __name__ == "__main__":
 
     print("TEST")
     print("Synaptic weights after training: ")
-    print(neural_network.synaptic_weights)
+    #print(neural_network.synaptic_weights)
 
 
     ###################
