@@ -33,7 +33,7 @@ class NeuralNetwork():
             error = training_outputs-output
 
             chyba=(error/(output/100))
-            self.error_history.append(np.average(chyba))
+            self.error_history.append(np.abs(np.average(error)))
 
             print("error je:")
             print(error)

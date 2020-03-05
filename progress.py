@@ -29,7 +29,7 @@ def stop():
 
 progress.pack(pady = 10)
 
-Button(root, text = 'Start', command = bar).pack(pady = 10)
-Button(root, text = 'Close', command = stop).pack(pady = 10)
+Button(root, text = 'Start', command = bar).pack(pady = 100)
+Button(root, text = 'Close', command = stop).pack(pady = 100)
 
 mainloop()

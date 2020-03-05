@@ -49,7 +49,7 @@ class neural_net_controller(threading.Thread):
         plot_list=np.load('plot_list.npy', mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII')
 
         fig=plt.figure(figsize=(7,3))
-        plt.ylim([-100,100])
+        plt.ylim([0,100])
 
         plt.plot(plot_list, error_history)
         plt.ylabel('Percentage Error')
